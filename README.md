@@ -1,2 +1,3 @@
 # fuustagram
-project is development for fuustagram
+ "fuustagram" is development project.
+scraping on Fuu's blog for create web page like a instagram.

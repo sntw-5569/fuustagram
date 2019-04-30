@@ -2,7 +2,7 @@
   <footer class="footer-menu">
     <div class="level is-flex">
       <div class="footer-text">
-        <h4>Created by Shinotatwu.</h4>
+        <h5>Created by Shinotatwu.</h5>
         <small>©︎2019 Fuustagram. Contents from Photo and text a royalty by the Fuyuka Saito, and Seed&Flower LLC Right reserved.</small>
       </div>
     </div>

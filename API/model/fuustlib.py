@@ -29,10 +29,14 @@ class ArticleData:
             self.hash_tag = args.get('hash_tag')
 
     def to_json(self):
+        return json.dumps(self.to_dict())
+
+    def to_dict(self):
         output = dict(post_number=self.post_number,
                       post_datetime=self.post_datetime,
                       image_list=self.image_list,
                       content=self.content,
                       hash_tag=self.hash_tag
                       )
-        return json.dumps(output)
+        return output
+

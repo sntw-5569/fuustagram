@@ -1,18 +1,75 @@
+import boto3
 from bs4 import BeautifulSoup
 from datetime import datetime
 from urllib import request
 from difflib import SequenceMatcher
-import re
 import json
+import os
+import re
 
 from model.fuustlib import ArticleData
 
-fuyuka_blog_url = 'http://www.keyakizaka46.com/s/k46o/diary/member/list?ima=0000&ct=08'
-reading_start_day = datetime(year=2019, month=2, day=21)
+fuyuka_blog_url = os.environ['fuyuka_blog_url']
+reading_start_day = datetime.strptime(
+    os.environ['reading_start_day'],
+    '%Y-%m-%d %H:%M:%S')
+
+
+def respond(err, res=None):
+    return {
+        'statusCode': '400' if err else '200',
+        'body': err.message if err else json.dumps(res),
+        'headers': {
+            'Content-Type': 'application/json',
+        },
+    }
+
+
+def lambda_handler(event, context):
+    if event.get('requestContext').get('httpMethod') == 'POST':
+        res = dict(result="post event.")
+        print("Post event!!")
+    else:
+        action_type = event.get('queryStringParameters').get('Action')
+        if action_type == "GetList":
+            res = load_article_data()
+        elif action_type == "ScrapingData":
+            get_scraping_data()
+            res = dict(result="Done Scraping.")
+        else:
+            res = dict(result="whats doing?")
+
+    return respond(None, res=res)
+
+
+def load_article_data():
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('fuustagram-article')
+
+    load_set = table.scan()
+    print(load_set)
+    return load_set.get('Items')
+
+
+def registry_article(articles):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('fuustagram-article')
+
+    for article in articles:
+        try:
+            table.put_item(Item={
+                'post_number': article.post_number,
+                'post_datetime': article.post_datetime,
+                'image_list': article.image_list,
+                'content': article.content,
+                'hash_tag': article.hash_tag
+            })
+        except Exception as e:
+            print(f"put item error: {str(e)}")
 
 
 def get_scraping_data():
-    print('-----------------')
+    print('---------scraping blog article--------')
     max_read_pages = 8
 
     fuustagram_data_list = []
@@ -23,27 +80,14 @@ def get_scraping_data():
         else:
             target_url = fuyuka_blog_url
         fuusta_list = get_fuustagram_article(target_url)
+
         _picking_data, _is_read_end = analyze_article_data(fuusta_list)
 
         if _picking_data:
             fuustagram_data_list += _picking_data
         if _is_read_end:
             break
-    write_file([t.to_dict() for t in fuustagram_data_list])
-
-
-# v---- method is local run only ----v
-def write_file(data_list):
-    with open('post_data.json', 'w', encoding='utf-8') as wf:
-        json.dump(dict(posts=data_list), wf)
-
-
-def read_json():
-    with open('post_data.json', 'r', encoding='utf-8') as rf:
-        read_data = json.load(rf)
-
-    return read_data
-# ^---- method is local run only ----^
+    registry_article(fuustagram_data_list)
 
 
 def analyze_article_data(article_list):
@@ -119,7 +163,3 @@ def get_fuustagram_article(url):
         result_list.append(article)
 
     return result_list
-
-
-if __name__ == "__main__":
-    get_scraping_data()

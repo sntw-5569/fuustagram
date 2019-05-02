@@ -10,16 +10,28 @@
       </div>
       <div class="level-right is-flex">
         <div class="level-item control has-icons-left">
-          <input class="input serch-input" type="text" placeholder="keyword">
-            <span class="icon is-small is-left input-innner">
-              <font-awesome-icon icon="search" class="input-innner-icon"/>
+          <input id="search-input" class="input search-input"
+            type="text" placeholder="keyword" v-on:input="inputTextSync($event)"
+            v-on:keydown="searchFunction($event, $event.srcElement.value)">
+          <span class="icon is-small is-left input-innner">
+            <font-awesome-icon icon="search" class="input-innner-icon"/>
+          </span>
+        </div>
+        <div class="level-item">
+          <span class="icon is-small input-reset" @click="inputClear()">
+            <font-awesome-icon id="input-clear" icon="times" class="input-innner-icon"
+              :class="{'has-text-success': keyword != ''}" />
           </span>
         </div>
         <div class="level-item head-icon">
-          <font-awesome-icon icon="sync-alt" />
+          <a class="is-marginless" @click="reload()">
+            <font-awesome-icon icon="sync-alt"/>
+          </a>
         </div>
         <div class="level-item head-icon">
-          <font-awesome-icon icon="arrow-alt-circle-up" />
+          <a class="is-marginless" @click="scroolReset()">
+            <font-awesome-icon icon="arrow-alt-circle-up" />
+          </a>
         </div>
       </div>
     </nav>
@@ -29,13 +41,32 @@
 <script>
 export default {
   name: "haeder-bar",
+  props: [
+    "searchFunction",
+    "reload"
+  ],
   data() {
     return {
       errorMessage: "",
-      isFilterd: false,
+      keyword: ''
     }
   },
   methods: {
+    inputTextSync: function(event) {
+      this.keyword = event.srcElement.value
+    },
+    inputClear: function() {
+      document.getElementById('search-input').value = ''
+      this.keyword = ''
+      if (this.$searchFunction != null) {
+        this.$searchFunction({key: 'Backspace'}, '')
+      }
+      let setClass = event.srcElement.attributes.class.value
+      event.srcElement.setAttribute('class', setClass.replace(' has-text-success', ''))
+    },
+    scroolReset: function() {
+      window.scrollTo(0, 0)
+    }
   }
 }
 </script>
@@ -60,6 +91,9 @@ export default {
 }
 .input-innner-icon {
   color: slategray;
+}
+.input-reset {
+  position: relative;
 }
 
 @media screen and (min-width : 300px){

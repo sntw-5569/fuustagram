@@ -41,6 +41,7 @@ var store = {
 // global variables
 Vue.prototype.$searchFunction = null;
 Vue.prototype.$axios = axios;
+Vue.prototype.$apiUrl = 'https://10lbouggqi.execute-api.ap-northeast-1.amazonaws.com/prd/fuustagram-api'
 
 new Vue({
   el: '#app',

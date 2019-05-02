@@ -2,18 +2,21 @@
 <div id="article-panel" class="article-panel">
   <div class="card">
     <header class="card-header is-flex">
-      <figure class="image is-48x48">
-        <img class=" is-rounded" :src="contents.imageUrl">
+      <figure class="profile-icon image is-48x48">
+        <img class=" is-rounded" :src="contents.profImage">
       </figure>
       <p class="card-header-title">
         {{ authorName }}
       </p>
     </header>
     <div class="card-image">
-      <figure class="image">
-        <img :src="contents.imageUrl"
-          @click="modalControl(contents.imageUrl, true)">
-      </figure>
+      <div class="" v-bind:class="{'n-slider': contents.imageUrl.length > 1 }">
+          <figure v-for="(img, index) in contents.imageUrl"
+           :key="index" class="image">
+            <img :src="img"
+              @click="modalControl(img, true)">
+          </figure>
+      </div>
     </div>
     <div class="card-content">
       <div class="media">
@@ -25,7 +28,12 @@
         <pre class="is-paddingless has-background-white">{{contents.text}}</pre>
         <a class="is-size-7 is-marginless is-block" 
           v-for="(tag, index) in contents.tagList" v-bind:key="index">
-          {{tag}}</a>
+          #{{tag}}</a>
+      </div>
+    </div>
+    <div class="card-footer">
+      <div class=" card-footer-item">
+        <p class="is-size-7 is-marginless">{{contents.datetime}}</p>
       </div>
     </div>
   </div>
@@ -44,8 +52,7 @@ export default {
       authorName: 'fuyuka_saito',
       errorMessage: '',
       isFilterd: false,
-      isModal: false,
-      selectImageUrl: ''
+      isModal: false
     }
   },
   methods: {
@@ -60,5 +67,9 @@ export default {
 }
 .card-header-title {
   margin: 0;
+}
+.profile-icon {
+  margin: 5px;
+  padding: 5px;
 }
 </style>

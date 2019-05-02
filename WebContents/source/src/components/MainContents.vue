@@ -1,13 +1,8 @@
 <template>
   <main class="main-contents">
-    <div class="section is-center content-area">
-      <!-- temporary data -->
-        <article-panel :modalControl="modalControl" :contents="tmpData" />
-        <article-panel :modalControl="modalControl" :contents="tmpData" />
-        <article-panel :modalControl="modalControl" :contents="tmpData" />
-        <article-panel :modalControl="modalControl" :contents="tmpData" />
-        <article-panel :modalControl="modalControl" :contents="tmpData" />
-      <!-- temporary data -->
+    <div id="article-container" class="section is-center content-area">
+        <article-panel v-for="(article, index) in articleData" :key="index"
+          :modalControl="modalControl" :contents="article" />
     </div>
     <div div id="pict-modal" class="modal" v-bind:class="{'is-active': isModal}">
         <div class="modal-background" @click="modalControl(null, false)"></div>
@@ -24,11 +19,12 @@
 
 <script>
 import ArticlePanel from "./article/ArticlePanel"
-import TempImage from "../assets/logo.png"
-
 
 export default {
   name: "main-contents",
+  props: [
+    "articleData"
+  ],
   components:{
     ArticlePanel
   },
@@ -36,18 +32,8 @@ export default {
     return {
       errorMessage: "",
       isFilterd: false,
-      imgUrl: TempImage,
       selectImage: null,
-      isModal: false,
-      tmpData: {
-        'text': 'this is detail text.\nsample inner comment.',
-        'imageUrl': TempImage,
-        'tagList': [
-          '#sample1',
-          '#sample2',
-          '#sample3',
-        ]
-      }
+      isModal: false
     }
   },
   methods: {
@@ -67,7 +53,6 @@ export default {
 <style lang="scss" scoped>
 .main-contents {
   padding: 10px 0; 
-  // background-color: green;
   background-color: rgb(240, 248, 239);
 }
 @media screen and (min-width : 300px){

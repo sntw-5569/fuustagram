@@ -29,6 +29,7 @@ export default {
   width: 100%;
   border-top: solid 1px #aaa;
   background-color: #eee;
+  z-index: 50;
 }
 .footer-text {
   width: 100%;

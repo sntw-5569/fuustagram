@@ -48,7 +48,7 @@ export default {
   background-color: white;
   // border-bottom: solid 1px rgb(150, 150, 150);
   box-shadow: 1px 2px 3px 0px #bbb;
-  z-index: 1;
+  z-index: 50;
 }
 .level-item {
   margin: 0;

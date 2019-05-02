@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="base-layer n-type">
-      <header-bar />
+      <header-bar :searchFunction="articleFilter" :reload="loadArticle" />
       <main-contents :articleData="articleData" />
       <footer-menu />
     </div>
@@ -12,6 +12,7 @@
 import HeaderBar from './components/HeaderBar'
 import MainContents from './components/MainContents'
 import FooterMenu from './components/FooterMenu'
+import Vue from 'vue';
 
 const apiUrl = 'https://10lbouggqi.execute-api.ap-northeast-1.amazonaws.com/prd/fuustagram-api'
 
@@ -24,29 +25,32 @@ export default {
   },
   data () {
     return {
-      errorMessage: "",
-      articleData: []
+      articleData: [],
+      fullArticleData: []
     }
   },
   created() {
+    Vue.prototype.$searchFunction = this.articleFilter
     if (sessionStorage.getItem('fuustaData') != null){
+      this.fullArticleData = JSON.parse(sessionStorage.getItem('fuustaData'))
       this.articleData = JSON.parse(sessionStorage.getItem('fuustaData'))
     } else {
       this.loadArticle()
     }
   },
   methods: {
-    popNotification: function() {
+    popNotification: function(msg) {
       if (document.getElementById('m-notice')) {
         return
       }
-      this.errorMessage = "Notification Popup."
       document.body.insertAdjacentHTML("afterbegin",
         '<div id="m-notice" class="n-notify n-center n-notify--fixed">'
-        + this.errorMessage
+        + msg
         +'</div>');
     },
     loadArticle: function() {
+      this.fullArticleData = []
+      this.articleData = []
       let header = {
         "Content-Type": "application/json",
         "X-Api-Key": "qlNVoIKO986yi9cJ1cSSi7fFMObov0dk3EfCAWdJ"
@@ -62,7 +66,6 @@ export default {
           params: parameter
         })
         .then(res => {
-          console.log(res)
           let articles = []
           let profIconUrl = ''
           res.data.forEach(item =>{
@@ -90,11 +93,47 @@ export default {
             return 0})
           
           this.articleData = articles
+          this.fullArticleData = [].concat(articles)
           sessionStorage['fuustaData'] = JSON.stringify(articles)
         })
         .catch(err => {
           console.log(err.message)
         })
+    },
+    articleFilter: function(event, keyword) {
+      if (event.key === 'Backspace' && keyword === '') {
+        this.articleData = [].concat(this.fullArticleData)
+        return
+      }
+      if (event.key != 'Enter' || keyword.trim() === '') {
+        return
+      }
+      let hitArticle = []
+      let keys = keyword.replace(/　/gi, ' ').split(' ')
+
+      this.fullArticleData.forEach(article => {
+        let hit = false
+        keys.forEach(key => {
+          article.tagList.forEach(tag => {
+            if (tag.match(key)) {
+              hit = true
+            } else if (tag === key) {
+              hit = true
+            }
+          })
+          if (!hit && article.text.match(key)) {
+            hit = true
+          }
+          if (hit && hitArticle.indexOf(article) === -1) {
+            hitArticle.push(article)
+          }
+        })
+      })
+      
+      this.articleData = hitArticle
+      if (this.articleData.length === 0) {
+        this.popNotification('Not found result for search.')
+      }
     }
   }
 }
@@ -125,9 +164,11 @@ li {
 }
 
 a {
-  color: #42b983;
+  color: #0a7042;
 }
-
+.n-notify.n-notify--fixed {
+  z-index: 70;
+}
 .n-slider--arrow, .n-slider--nav a {
   --control-bg: rgba(255, 255, 255, 0.308);
 	--control-color: rgb(7, 211, 48);		

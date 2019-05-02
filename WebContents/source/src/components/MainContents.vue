@@ -55,6 +55,9 @@ export default {
   padding: 10px 0; 
   background-color: rgb(240, 248, 239);
 }
+.modal {
+  z-index: 100;
+}
 @media screen and (min-width : 300px){
     .content-area {
     padding: 0 10%;
@@ -63,11 +66,13 @@ export default {
 @media screen and (min-width : 720px){
   .content-area {
     padding: 0 20%;
+    margin-bottom: 50px;
   }
 }
 @media screen and (min-width : 1600px){
   .content-area {
     padding: 0 30%;
+    margin-bottom: 50px;
   }
 }
 </style>

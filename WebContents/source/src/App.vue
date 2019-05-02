@@ -14,8 +14,6 @@ import MainContents from './components/MainContents'
 import FooterMenu from './components/FooterMenu'
 import Vue from 'vue';
 
-const apiUrl = 'https://10lbouggqi.execute-api.ap-northeast-1.amazonaws.com/prd/fuustagram-api'
-
 export default {
   name: 'app',
   components: {
@@ -60,7 +58,7 @@ export default {
         "Action": "GetList"
       }
       this.$axios({
-          url: apiUrl,
+          url: this.$apiUrl,
           method: 'get',
           headers: header,
           params: parameter
@@ -68,12 +66,16 @@ export default {
         .then(res => {
           let articles = []
           let profIconUrl = ''
+          let likeMap = {}
           res.data.forEach(item =>{
             if (item.post_datetime.startsWith('&')) {
               if (item.post_datetime === '&profile') {
                 profIconUrl = item.image_list[0]
               }
-            } else {
+            } else if (item.post_datetime.startsWith('lk#')) {
+              let mapKey = item.post_number+'_'+item.post_datetime
+              likeMap[mapKey] = item.liked
+            } else if (item.post_datetime.startsWith('2')) {            
               let fuustaArticle = {
                 'number': item.post_number,
                 'text': item.content.join('\n'),
@@ -86,6 +88,8 @@ export default {
           })
           articles.forEach(article => {
             article.profImage = profIconUrl
+            let mapKey = article.number+'_lk#'+article.datetime
+            article.likeCount = likeMap[mapKey] || 0
           })
           articles.sort(function(a,b){
             if(Number(a.number) < Number(b.number)) return -1

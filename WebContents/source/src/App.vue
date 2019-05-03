@@ -77,7 +77,7 @@ export default {
           res.data.forEach(item =>{
             if (item.post_datetime.startsWith('&')) {
               if (item.post_datetime === '&profile') {
-                profIconUrl = item.image_list[0]
+                profIconUrl = item.image_list[0].replace('http://', 'https://')
               }
             } else if (item.post_datetime.startsWith('lk#')) {
               let mapKey = item.post_number+'_'+item.post_datetime

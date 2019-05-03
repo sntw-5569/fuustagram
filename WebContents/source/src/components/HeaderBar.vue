@@ -69,7 +69,6 @@ export default {
     },
     scroolReset: function() {
       window.scrollTo(0, 0)
-      console.log(this.logo)
     }
   }
 }

@@ -46,6 +46,13 @@ export default {
         + msg
         +'</div>');
     },
+    replaceProtocol: function(urlList) {
+      let repList = []
+      urlList.forEach(url => {
+        repList.push(url.replace('http://', 'https://'))
+      })
+      return repList
+    },
     loadArticle: function() {
       this.fullArticleData = []
       this.articleData = []
@@ -75,11 +82,12 @@ export default {
             } else if (item.post_datetime.startsWith('lk#')) {
               let mapKey = item.post_number+'_'+item.post_datetime
               likeMap[mapKey] = item.liked
-            } else if (item.post_datetime.startsWith('2')) {            
+            } else if (item.post_datetime.startsWith('2')) {
+              let imageList = this.replaceProtocol(item.image_list)          
               let fuustaArticle = {
                 'number': item.post_number,
                 'text': item.content.join('\n'),
-                'imageUrl': item.image_list,
+                'imageUrl': imageList,
                 'tagList': item.hash_tag,
                 'datetime': item.post_datetime
               }

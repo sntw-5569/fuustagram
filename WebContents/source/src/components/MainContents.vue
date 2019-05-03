@@ -56,8 +56,11 @@ export default {
     }
   },
   updated() {
-    if (this.articleData && this.profileImageUrl === "") {
-      this.profileImageUrl = this.articleData[0].profImage
+    if (this.articleData 
+      && this.articleData.length > 0 && this.profileImageUrl === "") {
+      if (Object.keys(this.articleData[0]).indexOf('profImage') >= 0) {
+        this.profileImageUrl = this.articleData[0].profImage
+      }
     }
   },
   methods: {

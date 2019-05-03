@@ -18,27 +18,6 @@ library.add([
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 require('../node_modules/natuive/index.js')
 
-var store = {
-  state: {
-    notification: 'Hello!',
-    searchWord: '',
-  },
-  mutations: {
-    setNotificationAction (newValue) {
-      this.state.message = newValue
-    },
-    clearNotificationAction () {
-      this.state.message = ''
-    },
-    setSearchWord (setValue) {
-      this.state.searchWord = setValue
-    },
-    clearSearchWord () {
-      this.state.searchWord = ''
-    }
-  }
-}
-
 // global variables
 Vue.prototype.$searchFunction = null;
 Vue.prototype.$axios = axios;
@@ -46,6 +25,5 @@ Vue.prototype.$apiUrl = 'https://10lbouggqi.execute-api.ap-northeast-1.amazonaws
 
 new Vue({
   el: '#app',
-  store: store,
   render: h => h(App)
 })

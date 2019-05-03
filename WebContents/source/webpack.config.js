@@ -5,8 +5,8 @@ module.exports = {
   entry: './src/main.js',
   output: {
     path: path.resolve(__dirname, './dist'),
-    publicPath: '/dist/',
-    filename: 'build.js'
+    publicPath: './dist/',
+    filename: '[name].js'
   },
   module: {
     rules: [
@@ -61,10 +61,12 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|ico)$/,
         loader: 'file-loader',
         options: {
-          name: '[name].[ext]?[hash]'
+          // name: '[name].[ext]?[hash]', // default
+          name: '[hash].[ext]',
+          outputPath: 'assets'
         }
       }
     ]
@@ -93,12 +95,6 @@ if (process.env.NODE_ENV === 'production') {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-      compress: {
-        warnings: false
       }
     }),
     new webpack.LoaderOptionsPlugin({

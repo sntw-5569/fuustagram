@@ -59,7 +59,6 @@ export default {
   data() {
     return {
       authorName: 'fuyuka_saito',
-      errorMessage: '',
       canClickLikes: true,
       isLiked: false,
       likedCount: 0,

@@ -4,7 +4,7 @@
       <div class="level-left title-logo">
         <figure class="image is-4by1">
           <a href="/" class="is-inline">
-            <img src="../assets/fuusta_logo.png" href="/">
+            <img :src="logo" href="/">
           </a>
         </figure>
       </div>
@@ -39,6 +39,8 @@
 </template>
 
 <script>
+import appLogo from '../assets/fuusta_logo.png'
+
 export default {
   name: "haeder-bar",
   props: [
@@ -47,8 +49,8 @@ export default {
   ],
   data() {
     return {
-      errorMessage: "",
-      keyword: ''
+      keyword: '',
+      logo: appLogo
     }
   },
   methods: {
@@ -67,6 +69,7 @@ export default {
     },
     scroolReset: function() {
       window.scrollTo(0, 0)
+      console.log(this.logo)
     }
   }
 }

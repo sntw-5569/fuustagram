@@ -76,7 +76,7 @@ export default {
 
 <style lang="scss" scoped>
 .header-bar {
-  position: sticky;
+  position: fixed;
   top: 0;
   overflow: hidden;
   background-color: white;
@@ -84,6 +84,17 @@ export default {
   box-shadow: 1px 2px 3px 0px #bbb;
   z-index: 50;
 }
+@supports (position: sticky) {
+  .header-bar {
+    position: sticky;
+  }
+}
+@supports (position: -webkit-sticky) {
+  .header-bar {
+    position: -webkit-sticky;
+  }
+}
+
 .level-item {
   margin: 0;
 }

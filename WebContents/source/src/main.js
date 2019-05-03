@@ -22,6 +22,7 @@ require('../node_modules/natuive/index.js')
 Vue.prototype.$searchFunction = null;
 Vue.prototype.$axios = axios;
 Vue.prototype.$apiUrl = 'https://10lbouggqi.execute-api.ap-northeast-1.amazonaws.com/prd/fuustagram-api'
+Vue.prototype.$apiKey = 'qlNVoIKO986yi9cJ1cSSi7fFMObov0dk3EfCAWdJ'
 
 new Vue({
   el: '#app',

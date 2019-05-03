@@ -14,8 +14,6 @@ export default {
   name: "footer-menu",
   data() {
     return {
-      errorMessage: '',
-      isFilterd: false,
     }
   },
   methods: {

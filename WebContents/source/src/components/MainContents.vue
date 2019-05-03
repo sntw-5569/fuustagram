@@ -12,7 +12,7 @@
       <div class="modal-background" @click="modalControl(null, false)"></div>
       <div v-if="notSaitoKyouko" class="modal-content" @click="modalControl(null, false)">
         <p class="image">
-          <img :src="selectImage" alt="">
+          <img :src="selectImage">
         </p>
       </div>
       <div v-if="yesSaitoKyouko" class="modal-content is-flex">
@@ -47,7 +47,6 @@ export default {
   },
   data() {
     return {
-      errorMessage: "",
       isFilterd: false,
       selectImage: null,
       isModal: false,
@@ -56,7 +55,7 @@ export default {
       profileImageUrl: ""
     }
   },
-  mounted() {
+  updated() {
     if (this.articleData && this.profileImageUrl === "") {
       this.profileImageUrl = this.articleData[0].profImage
     }

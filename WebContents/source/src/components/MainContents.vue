@@ -89,6 +89,9 @@ export default {
   padding: 10px 0; 
   background-color: rgb(240, 248, 239);
 }
+main {
+  -webkit-touch-callout: none;
+}
 .-pad-5per {
   padding: 5%;
 }

@@ -116,7 +116,7 @@ export default {
     sendLikeStatus: function(pkey, nmb) {
       let header = {
         "Content-Type": "application/json",
-        "X-Api-Key": "qlNVoIKO986yi9cJ1cSSi7fFMObov0dk3EfCAWdJ"
+        "X-Api-Key": this.$apiKey
       }
       let parameter = {
         "AppName": "Fuustagram",

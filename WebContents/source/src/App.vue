@@ -184,10 +184,10 @@ a {
 .base-layer {
   position: relative;
 }
-
 .n-notify {
   height: 80px;
 }
+
 .-no-disp {
   display: none;
 }

@@ -26,9 +26,10 @@
       </div>
       <div class="content has-text-left">
         <pre class="is-paddingless has-background-white">{{contents.text}}</pre>
-        <a class="is-size-7 is-marginless is-block" @click="tagClick(tag)"
+        <p class="is-marginless is-block"
           v-for="(tag, index) in contents.tagList" v-bind:key="index">
-          #{{tag}}</a>
+          <a class="tag-size is-marginless" @click="tagClick(tag)">
+          #{{tag}}</a></p>
       </div>
     </div>
     <div class="card-footer">
@@ -172,10 +173,16 @@ export default {
   .card-header-title {
     font-size: 1.15em;
   }
+  .tag-size {
+    font-size: 0.9em;
+  }
 }
 @media screen and (min-width : 720px){
   .card-header-title {
     font-size: 1.5em;
+  }
+  .tag-size {
+    font-size: 1.25em;
   }
 }
 </style>

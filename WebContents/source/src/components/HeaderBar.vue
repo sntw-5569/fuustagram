@@ -24,7 +24,7 @@
           </span>
         </div>
         <div class="level-item head-icon">
-          <a class="is-marginless" @click="reload()">
+          <a class="is-marginless" @click="inputClear(); reload();">
             <font-awesome-icon icon="sync-alt"/>
           </a>
         </div>
@@ -61,8 +61,9 @@ export default {
       if (this.$searchFunction != null) {
         this.$searchFunction({key: 'Backspace'}, '')
       }
-      let setClass = event.srcElement.attributes.class.value
-      event.srcElement.setAttribute('class', setClass.replace(' has-text-success', ''))
+      let target = document.getElementById('input-clear')
+      let setClass = target.attributes.class.value.replace('has-text-success', '')
+      target.setAttribute('class', setClass)
     },
     scroolReset: function() {
       window.scrollTo(0, 0)

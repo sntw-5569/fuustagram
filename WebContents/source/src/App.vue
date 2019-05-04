@@ -100,8 +100,8 @@ export default {
             article.likeCount = likeMap[mapKey] || 0
           })
           articles.sort(function(a,b){
-            if(Number(a.number) < Number(b.number)) return -1
-            if(Number(a.number) > Number(b.number)) return 1
+            if(Number(a.number) < Number(b.number)) return 1
+            if(Number(a.number) > Number(b.number)) return -1
             return 0})
           
           this.articleData = articles

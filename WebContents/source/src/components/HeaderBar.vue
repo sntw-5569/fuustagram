@@ -4,7 +4,7 @@
       <div class="level-left title-logo">
         <figure class="image is-4by1">
           <a href="/" class="is-inline">
-            <img :src="logo" href="/">
+            <img :src="logo" href="/" alt="fuustagram">
           </a>
         </figure>
       </div>
